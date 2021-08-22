@@ -10,7 +10,7 @@ services:
       - "3306:3306"
     volumes: 
       - ./data/mariadb:/var/lib/mysql
-      - ./mariadb/conf.d:/etc/mysql/conf.d  
+      - ./mariadb/my.cnf:/etc/mysql/my.cnf
     networks:
       - backend
     environment:
