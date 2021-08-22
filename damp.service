@@ -1,0 +1,18 @@
+# /etc/systemd/system/<myfile>.service
+
+[Unit]
+Description=Docker DAMP
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+User=root
+Group=docker
+ExecStartPre=/usr/bin/docker-compose -f "/home/tciles/Workspace/docker/damp/docker-compose.yml" down -v
+ExecStart=/usr/bin/docker-compose -f "/home/tciles/Workspace/docker/damp/docker-compose.yml" up
+ExecStop=/usr/bin/docker-compose -f "/home/tciles/Workspace/docker/damp/docker-compose.yml" down -v
+SyslogIdentifier=my_docker_damp
+
+[Install]
+WantedBy=multi-user.agent

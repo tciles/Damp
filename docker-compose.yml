@@ -28,8 +28,9 @@ services:
     ports: 
       - "9000:9000"
       - "9003:9003"
+    user: "${UID}:${GID}"  
     volumes:
-      - "${WWW_ROOT}:/var/www/html"
+      - "${WWW_ROOT}:/var/www/html:rw"
     networks:
       - backend
       - frontend
@@ -67,6 +68,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - "./letsencrypt:/letsencrypt"
+      - "./configuration:/configuration/"  
 
   ##########
   # Apache #
@@ -80,7 +82,7 @@ services:
       - frontend
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.httpd.rule=Host(`dev-docker.lan`) || Host(`portfolio.lan`)"
+      - "traefik.http.routers.httpd.rule=Host(`dev-docker.lan`) || Host(`portfolio.lan`) || Host(`projectmanager-docker.lan`)"
       - "traefik.http.routers.httpd.entrypoints=websecure"
       - "traefik.http.routers.httpd.tls.certresolver=myresolver"  
 
@@ -101,8 +103,9 @@ services:
       - PMA_HOST=mariadb
       - UPLOAD_LIMIT=128M
     labels:
-      - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin-docker.lan`)"
       - "traefik.enable=true"
+      - "traefik.http.routers.phpmyadmin.entrypoints=web"
+      - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin-docker.lan`)"
 
 networks:
   backend:        

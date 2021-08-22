@@ -9,7 +9,8 @@ RUN apt install -y \
     libicu-dev \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
-    libpng-dev
+    libpng-dev \
+    libzip-dev
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
@@ -18,10 +19,13 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 #   ldap mbstring mysqli oci8 odbc opcache pcntl pdo pdo_dblib pdo_firebird pdo_mysql pdo_oci pdo_odbc pdo_pgsql pdo_sqlite
 #   pgsql phar posix pspell readline reflection session shmop simplexml snmp soap sockets sodium spl standard sysvmsg
 #   sysvsem sysvshm tidy tokenizer xml xmlreader xmlwriter xsl zend_test zip
-RUN docker-php-ext-install -j$(nproc) intl opcache gd
+RUN docker-php-ext-install -j$(nproc) intl opcache gd pdo_mysql zip
 
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
+
+RUN usermod -u 1000 www-data
+RUN chown -R www-data:www-data /var/www
 
 # Symfony
 RUN wget https://get.symfony.com/cli/installer -O - | bash    

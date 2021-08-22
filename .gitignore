@@ -1,2 +1,6 @@
 data/
 letsencrypt/
+
+httpd/conf/sites-enabled/*
+!httpd/conf/sites-enabled/000-default.conf
+!httpd/conf/sites-enabled/001-portfolio.conf
