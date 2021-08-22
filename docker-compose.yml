@@ -90,7 +90,6 @@ services:
   # phpMyAdmin #
   ##############
   phpmyadmin:
-    container_name: 'phpmyadmin'
     image: phpmyadmin
     restart: always
     ports:
